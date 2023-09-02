@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from 'typeorm';
+import { School } from '../school/school.entity';
 
 @Entity({ name: 'mst_academic_year' })
 export class AcademicYear {
@@ -13,4 +14,12 @@ export class AcademicYear {
 
     @Column()
     is_active: boolean;
+
+    @ManyToOne(() => School, (a) => a.school_id, {
+        onDelete: 'CASCADE',
+        onUpdate: 'NO ACTION'
+    })
+    @JoinColumn({ name: "school_id" })
+    @Column()
+    school_id: number;
 }

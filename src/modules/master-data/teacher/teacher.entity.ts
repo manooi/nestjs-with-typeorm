@@ -1,5 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable, ManyToOne, JoinColumn } from 'typeorm';
 import { Subject } from '../subject/subject.entity';
+import { School } from '../school/school.entity';
 
 @Entity({ name: 'mst_teacher' })
 export class Teacher {
@@ -30,5 +31,13 @@ export class Teacher {
             referencedColumnName: "subject_id"
         }
     })
-    subjects: Subject[]
+    subjects: Subject[];
+
+    @ManyToOne(() => School, (a) => a.school_id, {
+        onDelete: 'CASCADE',
+        onUpdate: 'NO ACTION'
+    })
+    @JoinColumn({ name: "school_id" })
+    @Column()
+    school_id: number;
 }
