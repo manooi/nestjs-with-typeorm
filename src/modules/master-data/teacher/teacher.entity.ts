@@ -14,7 +14,7 @@ export class Teacher {
     last_name: string;
 
     @Column({ length: 100 })
-    study_plan: string;
+    teacher_unique_id: string;
 
     @ManyToMany(() => Subject, {
         onDelete: 'CASCADE',
