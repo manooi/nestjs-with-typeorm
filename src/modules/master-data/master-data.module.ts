@@ -1,14 +1,17 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { AcademicYear } from "./academic-year/academic-year.entity";
 import { MasterDataController } from './master-data.controller';
+import { School } from "./school/school.entity";
+import { SchoolService } from './school/school.service';
+
 
 @Module({
     imports: [
-        TypeOrmModule.forFeature([AcademicYear]),
+        TypeOrmModule.forFeature([School]),
     ],
     controllers: [MasterDataController],
-    providers: [],
+    providers: [SchoolService],
+    exports: []
 })
 export class MasterDataModule {
 

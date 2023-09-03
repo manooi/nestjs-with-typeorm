@@ -1,16 +1,27 @@
-import { Controller, Get } from '@nestjs/common';
-import { AcademicYear } from './academic-year/academic-year.entity';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from "typeorm";
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { SchoolService } from './school/school.service';
+import { UpsertSchoolRequestDto } from './school/dtos/upsert-school.request.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('master-data')
 @Controller('master-data')
 export class MasterDataController {
     constructor(
-        @InjectRepository(AcademicYear) private repo: Repository<AcademicYear>,
+        private schoolService: SchoolService
     ) { }
 
-    @Get('academic-year')
-    getAllAcademicYear() {
-        return this.repo.find();
+    @Get('school')
+    getAllSchool() {
+        return this.schoolService.getAll();
+    }
+
+    @Post('school')
+    upsertSchool(@Body() req: UpsertSchoolRequestDto) {
+        return this.schoolService.upsertSchool(req);
+    }
+
+    @Delete('school/:id')
+    delteSchool(@Param("id") id :string) {
+        return this.schoolService.deleteSchool(+id);
     }
 }
