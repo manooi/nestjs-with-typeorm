@@ -2,8 +2,11 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MasterDataModule } from './modules/master-data/master-data.module';
-import { AcademicYear } from './modules/master-data/academic-year/academic-year.entity';
 import { School } from './modules/master-data/school/school.entity';
+import { Teacher } from './modules/master-data/teacher/teacher.entity';
+import { Subject } from './modules/master-data/subject/subject.entity';
+import { AcademicYear } from './modules/master-data/academic-year/academic-year.entity';
+import { ClassRoom } from './modules/master-data/classroom/classroom.entity';
 
 
 @Module({
@@ -21,7 +24,7 @@ import { School } from './modules/master-data/school/school.entity';
       database: process.env.DB_DATABASENAME,
       synchronize: false, // set to true to automatically synchronize database schema with TypeORM entities during development (use with caution in production)
       logging: true, // set to true to enable logging of database queries and other TypeORM-related messages
-      entities: [School], // specify the path to your TypeORM entities
+      entities: [School, Teacher, Subject, AcademicYear, ClassRoom], // specify the path to your TypeORM entities
       migrationsRun: false,
       schema: 'public'
     }),
