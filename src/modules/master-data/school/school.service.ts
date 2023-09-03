@@ -12,7 +12,7 @@ export class SchoolService {
     ) { }
 
     getAll() {
-        return this.repo.find({ order: { school_id: 'ASC' } });
+        return this.repo.find({ order: { school_id: 'ASC' }, take: 100 });
     }
 
     async upsertSchool(req: UpsertSchoolRequestDto) {

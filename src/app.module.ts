@@ -7,6 +7,8 @@ import { Teacher } from './modules/master-data/teacher/teacher.entity';
 import { Subject } from './modules/master-data/subject/subject.entity';
 import { AcademicYear } from './modules/master-data/academic-year/academic-year.entity';
 import { ClassRoom } from './modules/master-data/classroom/classroom.entity';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
 
 
 @Module({
@@ -28,9 +30,17 @@ import { ClassRoom } from './modules/master-data/classroom/classroom.entity';
       migrationsRun: false,
       schema: 'public'
     }),
-    MasterDataModule
+    MasterDataModule,
+    ThrottlerModule.forRoot({
+      ttl: 60,
+      limit: 60,
+    }),
   ],
   controllers: [],
-  providers: [],
+  providers: [{
+    provide: APP_GUARD,
+    useClass: ThrottlerGuard
+  }
+  ],
 })
 export class AppModule { }

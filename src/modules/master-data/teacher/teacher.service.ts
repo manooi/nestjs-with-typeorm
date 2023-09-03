@@ -12,7 +12,7 @@ export class TeacherService {
     ) { }
 
     getAll() {
-        return this.repo.find({ order: { teacher_id: 'ASC' } });
+        return this.repo.find({ order: { teacher_id: 'ASC' }, take: 100 });
     }
 
     async addTeacher(req: EditTeacherRequestDto) {
