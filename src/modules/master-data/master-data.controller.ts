@@ -1,9 +1,10 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
 import { SchoolService } from './school/school.service';
 import { UpsertSchoolRequestDto } from './school/dtos/upsert-school.request.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { TeacherService } from './teacher/teacher.service';
 import { EditTeacherRequestDto } from './teacher/dtos/edit-teacher.request.dto';
+import { GetTeacherRequestDto } from './teacher/dtos/get-teacher.request.dto';
 
 @ApiTags('master-data')
 @Controller('master-data')
@@ -29,8 +30,8 @@ export class MasterDataController {
     }
 
     @Get('teacher')
-    getTeacher() {
-        return this.teacherService.getAll();
+    getTeacher(@Query() req: GetTeacherRequestDto) {
+        return this.teacherService.searchTeacher(req);
     }
 
     @Post('teacher')

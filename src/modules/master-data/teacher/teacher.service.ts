@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, In, Not } from "typeorm";
 import { Teacher } from './teacher.entity';
 import { EditTeacherRequestDto } from './dtos/edit-teacher.request.dto';
+import { GetTeacherRequestDto } from './dtos/get-teacher.request.dto';
 
 @Injectable()
 export class TeacherService {
@@ -11,8 +12,20 @@ export class TeacherService {
         @InjectRepository(Teacher) private repo: Repository<Teacher>,
     ) { }
 
-    getAll() {
-        return this.repo.find({ order: { teacher_id: 'ASC' }, take: 100 });
+    searchTeacher(req: GetTeacherRequestDto) {
+        let query = this.repo.createQueryBuilder("entity");
+
+        if (req.school_id) {
+            query = query.where("school_id = :param1", { param1: req.school_id });
+        }
+
+        if (req.student_name) {
+            query = query.where("first_name ILIKE :param2 or last_name ILIKE :param2", { param2: `%${req.student_name}%` });
+        }
+
+        query = query.addOrderBy('teacher_id', 'ASC').take(100);
+
+        return query.getMany();
     }
 
     async addTeacher(req: EditTeacherRequestDto) {
