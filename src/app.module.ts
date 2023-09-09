@@ -9,6 +9,7 @@ import { AcademicYear } from './modules/master-data/academic-year/academic-year.
 import { ClassRoom } from './modules/master-data/classroom/classroom.entity';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
+import { Student } from './modules/master-data/student/student.entity';
 
 
 @Module({
@@ -26,7 +27,7 @@ import { APP_GUARD } from '@nestjs/core';
       database: process.env.DB_DATABASENAME,
       synchronize: false, // set to true to automatically synchronize database schema with TypeORM entities during development (use with caution in production)
       logging: true, // set to true to enable logging of database queries and other TypeORM-related messages
-      entities: [School, Teacher, Subject, AcademicYear, ClassRoom], // specify the path to your TypeORM entities
+      entities: [School, Teacher, Subject, AcademicYear, ClassRoom, Student], // specify the path to your TypeORM entities
       migrationsRun: false,
       schema: 'public'
     }),

@@ -9,14 +9,17 @@ import { ClassRoom } from "./classroom/classroom.entity";
 import { TeacherService } from "./teacher/teacher.service";
 import { SchoolController } from "./school/school.controller";
 import { TeacherController } from "./teacher/teacher.controller";
+import { StudentController } from "./student/student.controller";
+import { StudentService } from "./student/student.service";
+import { Student } from "./student/student.entity";
 
 
 @Module({
     imports: [
-        TypeOrmModule.forFeature([School, Teacher, Subject, AcademicYear, ClassRoom]),
+        TypeOrmModule.forFeature([School, Teacher, Subject, AcademicYear, ClassRoom, Student]),
     ],
-    controllers: [SchoolController, TeacherController],
-    providers: [SchoolService, TeacherService],
+    controllers: [SchoolController, TeacherController, StudentController],
+    providers: [SchoolService, TeacherService, StudentService],
     exports: []
 })
 export class MasterDataModule {
