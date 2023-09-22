@@ -1,5 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, PrimaryColumn, ManyToMany, JoinTable, OneToOne, OneToMany, Unique } from 'typeorm';
 import { School } from '../school/school.entity';
+import { AcademicYear } from '../academic-year/academic-year.entity';
 
 @Entity({ name: 'mst_classroom' })
 export class ClassRoom {
@@ -19,4 +20,12 @@ export class ClassRoom {
     @JoinColumn({ name: "school_id" })
     @Column()
     school_id: number;
+
+    @ManyToOne(() => AcademicYear, (a) => a.academic_year_id, {
+        onDelete: 'CASCADE',
+        onUpdate: 'NO ACTION'
+    })
+    @JoinColumn({ name: "academic_year_id" })
+    @Column()
+    academic_year_id: number;
 }
