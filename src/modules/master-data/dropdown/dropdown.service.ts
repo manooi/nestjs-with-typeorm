@@ -9,7 +9,7 @@ export class DropdownService {
     ) { }
 
     getSchoolAcademicYear() {
-        return this.schoolService.getAll();
+        return this.schoolService.getSchoolAcademicYearClassRoom();
     }
 
 }

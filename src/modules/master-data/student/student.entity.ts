@@ -24,6 +24,10 @@ export class Student {
     @Column()
     school_id: number;
 
+    @ManyToOne(() => School, (a) => a.school_id)
+    @JoinColumn({ name: "school_id" })
+    school: School; // Reference only
+
     @ManyToMany(() => ClassRoom, {
         onDelete: 'CASCADE',
         onUpdate: 'NO ACTION'

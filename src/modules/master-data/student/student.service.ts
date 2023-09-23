@@ -5,7 +5,6 @@ import { Student } from './student.entity';
 import { SearchStudentRequestDto } from './dtos/search-student.request.dto';
 import { UpsertStudentRequestDto } from './dtos/upsert-student.request.dto';
 import { School } from '../school/school.entity';
-import { SearchStudentResponse } from './dtos/search-student.response.dto';
 import { ClassRoom } from '../classroom/classroom.entity';
 
 @Injectable()
@@ -16,46 +15,44 @@ export class StudentService {
         @InjectRepository(ClassRoom) private classRoomRepo: Repository<ClassRoom>,
     ) { }
 
-    async searchStudent(req: SearchStudentRequestDto): Promise<SearchStudentResponse[]> {
-        let query = this.studentRepo.createQueryBuilder("student");
+    async searchStudent(req: SearchStudentRequestDto) {
+        let query = this.studentRepo
+            .createQueryBuilder('student')
+            .where('student.school_id = :schoolId', { schoolId: req.school_id })
+            .leftJoinAndSelect('student.school', 'school')
+            .leftJoinAndSelect('student.classrooms', 'classroom')
+            .andWhere('classroom.academic_year_id = :academicYearId', { academicYearId: req.academic_year_id })
 
-        if (req.school_id) {
-            query = query.where("student.school_id = :param1", { param1: req.school_id });
+        if (req.classroom_id) {
+            query = query.andWhere('classroom.classroom_id = :classroomId', { classroomId: req.classroom_id });
         }
 
         if (req.student_name) {
-            query = query.where("student_first_name ILIKE :param2 or student_last_name ILIKE :param2", { param2: `%${req.student_name}%` });
+            query = query.andWhere(
+                '(student.student_first_name ILIKE :student_name or student.student_last_name ILIKE :student_name)',
+                { student_name: `%${req.student_name}%` }
+            )
         }
 
-        query = query.leftJoinAndSelect(School, "sc", "sc.school_id = student.school_id");
-        query = query.addOrderBy('student.student_id', 'ASC').take(100);
-        query = query.select(['student.student_id as student_id',
-            'student.student_first_name as student_first_name',
-            'student.student_last_name as student_last_name',
-            'student.student_unique_id as student_unique_id',
-            'student.school_id as school_id',
-            'sc.school_name as school_name'
-        ]);
-
-        return await query.getRawMany() as unknown as SearchStudentResponse[];
+        return await query.getMany();
     }
 
     async upsertStudent(req: UpsertStudentRequestDto) {
         const allStudentsInSpecificSchool: Student[] = await this.studentRepo.find({ where: { school_id: req.school_id }, relations: ['classrooms'] });
 
-        for await (let cr of req.class_rooms) {
+        for await (let cr of req.classrooms) {
 
             let existingOrNewClassRoom: ClassRoom;
 
-            if (cr.class_room_id === null) {
+            if (cr.classroom_id === null) {
                 existingOrNewClassRoom = this.classRoomRepo.create();
-                existingOrNewClassRoom.classroom_name = cr.class_room_name;
+                existingOrNewClassRoom.classroom_name = cr.classroom_name;
                 existingOrNewClassRoom.academic_year_id = req.academic_year_id;
                 existingOrNewClassRoom.school_id = req.school_id;
                 await this.classRoomRepo.save(existingOrNewClassRoom);
             }
             else {
-                existingOrNewClassRoom = await this.classRoomRepo.findOne({ where: { classroom_id: cr.class_room_id } });
+                existingOrNewClassRoom = await this.classRoomRepo.findOne({ where: { classroom_id: cr.classroom_id } });
             }
 
             let newOrUpdatedStudents: Student[] = [];

@@ -11,6 +11,11 @@ export class SearchStudentRequestDto {
     @IsNumber()
     academic_year_id: number;
 
+    @Transform((value) => toNumber(value.value))
+    @IsNumber()
+    @IsOptional()
+    classroom_id: number;
+
     @IsString()
     @IsOptional()
     student_name?: string;

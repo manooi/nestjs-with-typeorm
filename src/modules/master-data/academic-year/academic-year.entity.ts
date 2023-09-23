@@ -1,5 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
 import { School } from '../school/school.entity';
+import { ClassRoom } from '../classroom/classroom.entity';
 
 @Entity({ name: 'mst_academic_year' })
 export class AcademicYear {
@@ -26,4 +27,8 @@ export class AcademicYear {
     @ManyToOne(() => School, (a) => a.school_id)
     @JoinColumn({ name: "school_id" })
     school: School; // For reference only, not an actual column
+
+    @OneToMany(() => ClassRoom, (a) => a.academic_year_id)
+    @JoinColumn({ name: "academic_year_id" })
+    classrooms: ClassRoom[]; // For reference only, not an actual colum'n
 }

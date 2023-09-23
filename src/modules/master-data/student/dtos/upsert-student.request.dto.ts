@@ -11,18 +11,18 @@ export class UpsertStudentRequestDto {
     @IsNotEmpty()
     @ValidateNested({ each: true })
     @Type(() => NewClassRoom)
-    class_rooms: NewClassRoom[];
+    classrooms: NewClassRoom[];
 }
 
 export class NewClassRoom {
     @IsNumber()
     @IsOptional()
     @ValidateIf((object, value) => value !== null)
-    class_room_id: number | null;
+    classroom_id: number | null;
 
     @IsString()
     @IsNotEmpty()
-    class_room_name: string;
+    classroom_name: string;
 
     @IsNotEmpty()
     @ValidateNested({ each: true })

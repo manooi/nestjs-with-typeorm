@@ -12,7 +12,11 @@ export class SchoolService {
     ) { }
 
     getAll() {
-        return this.repo.find({ order: { school_id: 'ASC' }, take: 100, relations: ['academic_years'] });
+        return this.repo.find({ order: { school_id: 'ASC' }, take: 100});
+    }
+
+    getSchoolAcademicYearClassRoom() {
+        return this.repo.find({ order: { school_id: 'ASC' }, take: 100, relations: ['academic_years', 'academic_years.classrooms'] });
     }
 
     async upsertSchool(req: UpsertSchoolRequestDto) {
