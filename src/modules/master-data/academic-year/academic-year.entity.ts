@@ -23,10 +23,7 @@ export class AcademicYear {
     @Column()
     school_id: number;
 
-    @ManyToOne(() => School, (a) => a.school_id, {
-        onDelete: 'CASCADE',
-        onUpdate: 'NO ACTION'
-    })
+    @ManyToOne(() => School, (a) => a.school_id)
     @JoinColumn({ name: "school_id" })
     school: School; // For reference only, not an actual column
 }

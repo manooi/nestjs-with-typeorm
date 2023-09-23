@@ -12,7 +12,7 @@ export class AcademicYearController {
     ) { }
 
     @Get('academic-year')
-    getAllSchool(@Query() req: SearchAcademicYearRequestDto) {
+    getAllAcademicYear(@Query() req: SearchAcademicYearRequestDto) {
         return this.academicYearService.getAll(req);
     }
 

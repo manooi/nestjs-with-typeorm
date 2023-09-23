@@ -14,6 +14,8 @@ import { StudentService } from "./student/student.service";
 import { Student } from "./student/student.entity";
 import { AcademicYearService } from "./academic-year/academic-year.service";
 import { AcademicYearController } from "./academic-year/academic-year.controller";
+import { DropdownService } from "./dropdown/dropdown.service";
+import { DropdownController } from "./dropdown/dropdown.controller";
 
 
 @Module({
@@ -25,12 +27,14 @@ import { AcademicYearController } from "./academic-year/academic-year.controller
         SchoolController,
         TeacherController,
         StudentController,
+        DropdownController
     ],
     providers: [
         AcademicYearService,
         SchoolService,
         TeacherService,
         StudentService,
+        DropdownService
     ],
     exports: []
 })

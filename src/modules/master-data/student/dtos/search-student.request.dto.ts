@@ -5,8 +5,11 @@ import { toNumber } from "src/helper/cast.helper";
 export class SearchStudentRequestDto {
     @Transform((value) => toNumber(value.value))
     @IsNumber()
-    @IsOptional()
-    school_id?: number;
+    school_id: number;
+
+    @Transform((value) => toNumber(value.value))
+    @IsNumber()
+    academic_year_id: number;
 
     @IsString()
     @IsOptional()
