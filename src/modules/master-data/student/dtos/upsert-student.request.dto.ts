@@ -2,13 +2,32 @@ import { Type } from "class-transformer";
 import { IsNotEmpty, IsNumber, IsOptional, IsString, ValidateIf, ValidateNested } from "class-validator";
 
 export class UpsertStudentRequestDto {
+    @IsNumber()
+    school_id: number;
+
+    @IsNumber()
+    academic_year_id: number;
+
+    @IsNotEmpty()
+    @ValidateNested({ each: true })
+    @Type(() => NewClassRoom)
+    class_rooms: NewClassRoom[];
+}
+
+export class NewClassRoom {
+    @IsNumber()
+    @IsOptional()
+    @ValidateIf((object, value) => value !== null)
+    class_room_id: number | null;
+
+    @IsString()
+    @IsNotEmpty()
+    class_room_name: string;
+
     @IsNotEmpty()
     @ValidateNested({ each: true })
     @Type(() => NewStudent)
     students: NewStudent[];
-
-    @IsNumber()
-    school_id: number;
 }
 
 export class NewStudent {
@@ -27,4 +46,11 @@ export class NewStudent {
 
     @IsString()
     student_unique_id: string;
+
+    // @IsString()
+    // @IsNotEmpty()
+    // student_prefix: string;
+
+    // @IsString()
+    // student_class_room_id: number;
 }
