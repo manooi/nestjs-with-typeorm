@@ -12,11 +12,25 @@ export class SchoolService {
     ) { }
 
     getAll() {
-        return this.repo.find({ order: { school_id: 'ASC' }, take: 100});
+        return this.repo.find({ order: { school_id: 'ASC' }, take: 100 });
     }
 
-    getSchoolAcademicYearClassRoom() {
-        return this.repo.find({ order: { school_id: 'ASC' }, take: 100, relations: ['academic_years', 'academic_years.classrooms'] });
+    async getSchoolAcademicYearClassRoom() {
+        let result = await this.repo.find({ order: { school_id: 'ASC' }, take: 100, relations: ['academic_years', 'academic_years.classrooms'] })
+
+        // Sort academic year
+        result = result.map((i) => ({
+            ...i, academic_years: i.academic_years.sort((a, b) => {
+                const bReversed = b.academic_year_name.split("/").reverse().join("/");
+                const aReversed = a.academic_year_name.split("/").reverse().join("/");
+                return bReversed.localeCompare(aReversed);
+            })
+        }));
+
+        // Sort classroom
+        result = result.map((i) => ({ ...i, academic_years: i.academic_years.map((j) => ({ ...j, classrooms: j.classrooms.sort((a, b) => a.classroom_name.localeCompare(b.classroom_name)) })) }))
+
+        return result;
     }
 
     async upsertSchool(req: UpsertSchoolRequestDto) {

@@ -34,6 +34,8 @@ export class StudentService {
             )
         }
 
+        query = query.limit(1000);
+
         return await query.getMany();
     }
 
