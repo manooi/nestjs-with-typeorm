@@ -30,5 +30,5 @@ export class AcademicYear {
 
     @OneToMany(() => ClassRoom, (a) => a.academic_year_id)
     @JoinColumn({ name: "academic_year_id" })
-    classrooms: ClassRoom[]; // For reference only, not an actual colum'n
+    classrooms: ClassRoom[]; // For reference only, not an actual column
 }

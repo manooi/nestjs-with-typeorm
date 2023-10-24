@@ -28,10 +28,10 @@ export class Student {
     @JoinColumn({ name: "school_id" })
     school: School; // Reference only
 
-    @ManyToMany(() => ClassRoom, {
+    @ManyToMany(() => ClassRoom, classroom => classroom.students, {
         onDelete: 'CASCADE',
         onUpdate: 'NO ACTION'
-    })
+    }, )
     @JoinTable({
         name: "mst_student_classroom",
         joinColumn: {

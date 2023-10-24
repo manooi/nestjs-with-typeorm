@@ -16,25 +16,30 @@ import { AcademicYearService } from "./academic-year/academic-year.service";
 import { AcademicYearController } from "./academic-year/academic-year.controller";
 import { DropdownService } from "./dropdown/dropdown.service";
 import { DropdownController } from "./dropdown/dropdown.controller";
+import { ClassRoomController } from "./classroom/classroom.controller";
+import { ClassRoomService } from "./classroom/classroom.service";
+import { ViewClassRoomSchoolStudent } from "./classroom/views/view-mst-classroom_school-student";
 
 
 @Module({
     imports: [
-        TypeOrmModule.forFeature([School, Teacher, Subject, AcademicYear, ClassRoom, Student]),
+        TypeOrmModule.forFeature([School, Teacher, Subject, AcademicYear, ClassRoom, Student, ViewClassRoomSchoolStudent]),
     ],
     controllers: [
         AcademicYearController,
         SchoolController,
         TeacherController,
         StudentController,
-        DropdownController
+        DropdownController,
+        ClassRoomController
     ],
     providers: [
         AcademicYearService,
         SchoolService,
         TeacherService,
         StudentService,
-        DropdownService
+        DropdownService,
+        ClassRoomService
     ],
     exports: []
 })
